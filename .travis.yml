@@ -56,3 +56,6 @@ after_script:
     - ls
     - phpunit --version
     - vendor/phpunit/phpunit/phpunit --version
+
+notifications:
+  email: false
