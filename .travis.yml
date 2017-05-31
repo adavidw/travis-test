@@ -1,24 +1,58 @@
 language: php
 
 php:
-    - 5.5
     - 5.6
+    - 7.0
 
-
+    
 sudo: false
 
+before_install:
+    # execute all of the commands which need to be executed 
+    # before installing dependencies
+    - ls
+    - phpunit --version
+    - vendor/phpunit/phpunit/phpunit --version
+    
+
+install:
+    # install all of the dependencies we need here
+    - composer install --prefer-dist
+    
+    - ls
+    - phpunit --version
+    - vendor/phpunit/phpunit/phpunit --version
+
 before_script:
+    # execute all of the commands which need to be executed 
+    # before running actual tests
     - pecl install xmldiff
     - composer install --prefer-dist
 #    - composer install --prefer-dist --ignore-platform-reqs
     - git submodule update --remote --recursive
+    
+    - ls
+    - phpunit --version
+    - vendor/phpunit/phpunit/phpunit --version
 
 script:
+    # execute all of the tests or other commands to determine
+    # whether the build will pass or fail
+    
     - vendor/phpunit/phpunit/phpunit --coverage-clover=coverage.clover
     - cd sample-code-php
     - composer install --prefer-dist
     - vendor/phpunit/phpunit/phpunit test-runner.php .
+    - phpunit test-runner.php .
 
+    - ls
+    - phpunit --version
+    - vendor/phpunit/phpunit/phpunit --version
+    
 after_script:
     - wget https://scrutinizer-ci.com/ocular.phar
 #    - php ocular.phar code-coverage:upload --format=php-clover coverage.clover
+
+    - ls
+    - phpunit --version
+    - vendor/phpunit/phpunit/phpunit --version
